@@ -1,10 +1,18 @@
 var lastModifiedDateRetrieved;
+var deliveryUrl;
+
+$.urlParam = function(name) {
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)')
+        .exec(window.location.search);
+
+    return (results !== null) ? results[1] || 0 : false;
+}
 
 function checkLastModifiedDate() {
     hideAlert();
     $.ajax({
         type: "GET",
-        url: "https://deliver.kenticocloud.com/1c7a9e17-7ff3-0235-eb49-1d37c47ae828/items/?system.type=display_ad&limit=1&order=system.last_modified[desc]&elements=title",
+        url: deliveryUrl + "&limit=1&elements=title",
         dataType: "json",
         success: actOnDateCheck,
         error: function() {
@@ -34,7 +42,7 @@ function actOnDateCheck(data) {
 function getNewSlides() {
     $.ajax({
         type: "GET",
-        url: "https://deliver.kenticocloud.com/1c7a9e17-7ff3-0235-eb49-1d37c47ae828/items/?system.type=display_ad&limit=3&order=system.last_modified[desc]",
+        url: deliveryUrl + "&limit=5",
         dataType: "json",
         success: processData,
         error: function() {
@@ -84,6 +92,16 @@ function createIndicator(index) {
     return indicatorItem;
 }
 
+function setDeliveryUrl() {
+    var adTag = $.urlParam("tag");
+    if (!adTag) {
+        adTag = "lamington";
+    }
+
+    deliveryUrl = "https://deliver.kenticocloud.com/1c7a9e17-7ff3-0235-eb49-1d37c47ae828/items/?system.type=display_ad&order=system.last_modified[desc]&elements.display_ad_tag[contains]=" + adTag;
+}
+
+setDeliveryUrl();
 checkLastModifiedDate();
 
 var intervalMins = 2;
