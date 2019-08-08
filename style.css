@@ -1,0 +1,27 @@
+.carousel-item {
+    height: 100vh;
+    min-height: 350px;
+    background: no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.alert-bottom {
+    position: fixed;
+    bottom: 5px;
+    left: 2%;
+    width: 96%;
+}
+
+.alert {
+    display: none;
+    z-index: 100;
+}
+
+h2,
+p {
+    background: rgba(0, 0, 0, 0.75);
+    padding: 4px 8px;
+}
