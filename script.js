@@ -1,5 +1,6 @@
 var lastModifiedDateRetrieved;
 var deliveryUrl;
+var itemLimit;
 
 $.urlParam = function(name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)')
@@ -42,7 +43,7 @@ function actOnDateCheck(data) {
 function getNewSlides() {
     $.ajax({
         type: "GET",
-        url: deliveryUrl + "&limit=5",
+        url: deliveryUrl + "&limit=" + itemLimit,
         dataType: "json",
         success: processData,
         error: function() {
@@ -96,6 +97,11 @@ function setDeliveryUrl() {
     var adTag = $.urlParam("tag");
     if (!adTag) {
         adTag = "lamington";
+    }
+
+    itemLimit = $.urlParam("limit");
+    if (!itemLimit) {
+        itemLimit = 5;
     }
 
     deliveryUrl = "https://deliver.kenticocloud.com/1c7a9e17-7ff3-0235-eb49-1d37c47ae828/items/?system.type=display_ad&order=system.last_modified[desc]&elements.display_ad_tag[contains]=" + adTag;
